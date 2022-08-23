@@ -1,0 +1,49 @@
+<div class="button--left">
+  <button class="close" mat-button (click)="onClose()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<h2 mat-dialog-title>Add New Session</h2>
+
+<!-- Mat Dialog Start -->
+<div mat-dialog-content>
+  <form class="form" [formGroup]="formGroup">
+    
+    <!-- Name Input -->
+    <mat-form-field class="form_item--fullwidth" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input cdkFocusInitial matInput formControlName="nameFormControl">
+      <mat-error *ngIf="formGroup.get('nameFormControl')?.errors">Name is required</mat-error>
+    </mat-form-field>
+
+    <!-- Start Date Input -->
+    <mat-form-field class="form_item--fullwidth" appearance="outline">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="startDateFormControl">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Start Time Input -->
+    <mat-form-field class="form_item--fullwidth" appearance="outline">
+      <mat-label>Start Time</mat-label>
+      <input (keyup)="verifyTime()" (click)="verifyTime()" type="time" matInput formControlName="startTimeFormControl">
+      <mat-error *ngIf="formGroup.get('endTimeFormControl')?.errors?.['sameTime']">Start and end time must be different</mat-error>
+      <mat-error *ngIf="formGroup.get('endTimeFormControl')?.errors?.['timeExceed']">Start time must be less than end time</mat-error>
+    </mat-form-field>
+
+    <!-- End Time Input -->
+    <mat-form-field class="form_item--fullwidth" appearance="outline">
+      <mat-label>End Time</mat-label>
+      <input (keyup)="verifyTime()" (click)="verifyTime()" type="time" matInput formControlName="endTimeFormControl">
+      <mat-error *ngIf="formGroup.get('endTimeFormControl')?.errors?.['sameTime']">Start and end time must be different</mat-error>
+      <mat-error *ngIf="formGroup.get('endTimeFormControl')?.errors?.['timeExceed']">End time must be greater than start time</mat-error>
+    </mat-form-field>
+
+  </form>
+</div> <!-- Mat Dialog End -->
+
+<div mat-dialog-actions>
+  <button mat-raised-button color="accent" (click)="onSaveData()" [disabled]="formGroup.invalid" [mat-dialog-close]>Save</button>
+</div>
